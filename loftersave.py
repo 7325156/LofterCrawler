@@ -57,12 +57,12 @@ def chapters(l,n,headers):
     fi=etree.HTML(html_data.encode("utf-8","ignore").decode('utf-8'))
     inner=etree.tostring(fi.xpath('//div[@id="textinf"]')[0]).decode('utf-8')
     inner=re.sub(r'\\n','\n',inner)
-    inner=re.sub('"\&quot;','"',inner)
-    inner=re.sub('\&quot;"','"',inner)
+    inner=re.sub('\"\\\&quot;','\"',inner)
+    inner=re.sub('\\\&quot;\"','\"',inner)
 
     title=re.findall(r'\"title\"\:\".*?\",\"type\"\:',intex)
     title=re.sub('"title":"','',title[0])
-    title=re.sub('","type":','',title)"\&quot;
+    title=re.sub('","type":','',title)
     
     aut=re.findall(r'\"blogNickName\"\:\".*?\",\"bigAvaImg\"',intex)
     aut=re.sub('"blogNickName":"','',aut[0])
@@ -167,10 +167,8 @@ while(1):
         i=input()
     links.reverse()
     for i in range(len(links)):
-        cha(links[i],i,headers)#每一个网址一个txt文件
-        #chapters(links[i],i,headers)#便于制作epub
+        #cha(links[i],i,headers)#每一个网址一个txt文件
+        chapters(links[i],i,headers)#便于制作epub
         #textF(links[i],i,headers,fo)#将所有txt合并在一个文件里
     print('\r\n所有章节下载完成！')
 os.chdir(path)
-    
-
